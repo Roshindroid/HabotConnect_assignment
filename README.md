@@ -8,8 +8,7 @@ Repository: https://github.com/Roshindroid/HabotConnect_assignment.git
 
 Mail: roshinroy050@gmail.com
 
-### API Endpoints
-
+## API Endpoints
 
 ### 1. Create Booking
 
@@ -163,6 +162,8 @@ The application uses four main entities:
 The LSA search endpoint uses Django ORM's `Exists` and `OuterRef` to check booking availability.
 
 A correlated subquery checks whether an LSA has any overlapping booking within the requested time range:
+
+`OuterRef("pk")` links each LSA to its own bookings, allowing `Exists` to determine availability without loading all bookings into Python.
 
 - `start_time < requested_end_time`
 - `end_time > requested_start_time`
