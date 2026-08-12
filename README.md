@@ -1,7 +1,11 @@
 Full Name: Roshin Roy
+
 Position: Python Backend Developer
-Project name: haabot_assignment
+
+Project name: habot_assignment
+
 Repository: https://github.com/Roshindroid/HabotConnect_assignment.git
+
 Mail: roshinroy050@gmail.com
 
 ### API Endpoints
