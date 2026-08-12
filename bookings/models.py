@@ -51,6 +51,14 @@ class Booking(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["lsa", "start_time", "end_time"],
+                name="booking_lsa_time_idx",
+            ),
+        ]
 
     def __str__(self):
         return f"Booking #{self.pk}"

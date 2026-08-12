@@ -231,3 +231,11 @@ The API will be available at the URL: http://127.0.0.1:8000/
 python manage.py test
 ```
 
+## Notes
+
+This project is a development prototype created for the HabotConnect backend hiring assessment.
+
+- `DEBUG=True` is intentionally enabled for local development.
+- SQLite is used for local development and testing.
+- The payment integration uses a mock external service implemented with `requests`.
+- Production deployment settings (HTTPS, SMTP email backend, secure cookies, HSTS) have not been enabled because deployment is outside the scope of this assignment.
