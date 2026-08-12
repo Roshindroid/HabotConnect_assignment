@@ -1,4 +1,10 @@
-## API Endpoints
+Full Name: Roshin Roy
+Position: Python Backend Developer
+Project name: haabot_assignment
+Repository: https://github.com/Roshindroid/HabotConnect_assignment.git
+Mail: roshinroy050@gmail.com
+
+### API Endpoints
 
 
 ### 1. Create Booking
@@ -130,5 +136,93 @@ Example response:
     "payment_id": 5,
     "booking_status": "CONFIRMED"
 }
+```
+
+## Database Design
+
+The application uses four main entities:
+
+- **Parent** — represents the parent requesting support.
+- **LSA** — represents a Learning Support Assistant and stores their skills and availability information.
+- **Booking** — represents a session requested by a Parent and assigned to an LSA.
+- **Payment** — represents the payment associated with a Booking.
+
+### Relationships
+
+- A Parent can have multiple Bookings.
+- An LSA can have multiple Bookings.
+- Each Booking belongs to one Parent and one LSA.
+- Each Booking can have an associated Payment.
+
+## Query Optimization
+
+The LSA search endpoint uses Django ORM's `Exists` and `OuterRef` to check booking availability.
+
+A correlated subquery checks whether an LSA has any overlapping booking within the requested time range:
+
+- `start_time < requested_end_time`
+- `end_time > requested_start_time`
+
+Cancelled and payment-failed bookings are excluded from the availability check.
+
+Using `Exists` allows the availability check to be performed by the database instead of fetching all bookings into Python and executing a separate booking query for each LSA. This avoids the N+1 query pattern for the booking availability check.
+
+Skill matching is currently performed in Python after the active and available LSAs have been retrieved. This keeps the implementation simple while the booking-overlap check remains database-driven.
+
+## Architecture
+
+This project uses Django with Django REST Framework (DRF).
+
+Django follows the **Model-View-Template (MVT)** architectural pattern. Since this project exposes REST APIs rather than server-rendered HTML pages, the Template layer is not used for the API responses. DRF serializers handle request and response representation, while Django models manage the database layer and API views handle HTTP requests.
+
+### Why Django MVT?
+
+Django was chosen because it provides:
+
+- Built-in ORM for relational database modeling.
+- Django REST Framework for structured REST API development.
+- Built-in validation and serialization support.
+- Django's testing framework for automated tests.
+- A clear separation between models, request handling, and data representation.
+
+## Setup Instructions
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/Roshindroid/HabotConnect_assignment.git
+cd HabotConnect_assignment
+```
+
+## 2. Create and activate a virtual environment
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+## 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## 4. Apply database migrations
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+## 5. Run the development server
+
+```bash
+python manage.py runserver
+```
+The API will be available at the URL: http://127.0.0.1:8000/
+
+## 6. Run tests
+
+```bash
+python manage.py test
 ```
 
