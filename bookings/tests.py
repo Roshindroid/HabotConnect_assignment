@@ -244,6 +244,34 @@ class LSASearchAPITests(APITestCase):
             returned_ids,
         )
         
+    def test_no_available_lsa_returns_empty_list(self):
+        Booking.objects.create(
+            parent=self.parent,
+            lsa=self.available_lsa,
+            start_time=self.start_time,
+            end_time=self.end_time,
+            status=Booking.Status.PENDING,
+        )
+
+        response = self.client.get(
+            self.url,
+            {
+                "skill": "autism",
+                "start_time": self.start_time.isoformat(),
+                "end_time": self.end_time.isoformat(),
+            },
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK,
+        )
+
+        self.assertEqual(
+            response.data,
+            [],
+        )
+        
 class PaymentWebhookAPITests(APITestCase):
 
     def setUp(self):
